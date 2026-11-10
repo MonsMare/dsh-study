@@ -1,4 +1,5 @@
 import {parseDshArgs} from "./args.ts";
+import {runDumpConfig} from "./dump-config.ts";
 
 const invocation = parseDshArgs(process.argv.slice(2));
 
@@ -10,9 +11,10 @@ switch (invocation.mode) {
     }
 
     case "dump-config": {
-        console.log("Config dump requested");
-        console.log("Profile:", invocation.profile);
-        console.log("Default only:", invocation.defaultOnly);
+        runDumpConfig(
+            invocation.profile, 
+            invocation.defaultOnly
+        );
         break;
     }
 }
