@@ -5,8 +5,13 @@ export async function runCli(): Promise<void> {
 
     switch (invocation.mode) {
         case "profile": {
-            console.log("Starting profile:", invocation.profile);
-            console.log("Arguments:", invocation.args);
+            const { runProfile } = await import("./profile-boot.ts");
+
+            runProfile({
+                profile: invocation.profile,
+                args: invocation.args
+            });
+
             break;
         }
 
