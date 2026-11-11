@@ -1,6 +1,6 @@
 import {parseDshArgs} from "./args.ts";
 
-async function runCli(): Promise<void> {
+export async function runCli(): Promise<void> {
     const invocation = parseDshArgs(process.argv.slice(2));
 
     switch (invocation.mode) {
@@ -20,4 +20,6 @@ async function runCli(): Promise<void> {
     }
 }
 
-await runCli();
+if (import.meta.main) {
+    await runCli();
+}
