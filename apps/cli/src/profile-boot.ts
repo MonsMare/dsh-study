@@ -7,6 +7,18 @@ import {
     writeFileSync
 } from "node:fs";
 
+//类型契约
+interface InitialProfileManifest {
+    name: string;
+    private: boolean;
+    dependencies: Record<string, string>;
+    dsh: {
+        profile: {
+            bundles: string[];
+        };
+    };
+}
+
 export function initProfile(
     dir: string,
     bundles: readonly string[]
@@ -16,10 +28,10 @@ export function initProfile(
     const manifestPath = join(dir, "package.json");
 
     if(!existsSync(manifestPath)){
-        const manifest = {
+        const manifest: InitialProfileManifest = {
             name: `dsh-profile-${basename(dir)}`,
             private: true,
-            dependences: {},
+            dependencies: {},
             dsh: {
                 profile: {
                     bundles: [...bundles]
