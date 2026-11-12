@@ -1,7 +1,7 @@
 # DSH Study — Learning Progress
 
 > Maintainer: AI study tutor. Record confirmed facts separately from unverified tests.
-> Last reviewed: 2026-11-12.
+> Last reviewed: 2026-11-12 (type-contract lesson).
 
 ## Upstream
 - Repository: deepseek-ai/deepseek-harness
@@ -16,12 +16,13 @@
 - M1-04: Extract profile-boot.ts entry with RunProfileOptions — dfa851a.
 - M1-05: Resolve profile directory from a logical profile name and reject basic invalid names — 0a20a2a. Learner confirmed implementation and understanding.
 - M1-06: Read a JSON profile manifest as `Record<string, unknown>`, checking that the top-level value is a non-array object — 73061df (remote commit verified, learner confirms rebase and push succeeded).
+- M1-07 (partial): Define official Profile templates (224dada); write the initial package.json without overwriting existing manifest (034f9c0); add an explicit InitialProfileManifest contract and fix `dependencies` field spelling (747db28). Source verified on remote, user confirms latest fix; local test output not independently verified.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-07: Define missing-profile behavior for official templates versus custom profiles, then implement minimal initialization in an isolated test root.
-- Status: not started.
+- M1-07: Finish Profile initialization (cordis.patch.yml and pnpm-workspace.yaml), then implement missing-profile decision logic for official vs custom profiles with isolated tests.
+- Status: in progress; manifest-only initializer and template table confirmed on GitHub.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
 
 ## Source evidence
@@ -31,12 +32,13 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit: 73061dfc189a3431f92d2069cdcefcf90336b849.
+- Latest confirmed study code commit: 747db28e73e130b09c8b9afae76edf8b800e2f65.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
 - Local working-tree state and test outputs: unknown.
-- This progress update is a separate remote docs commit. Before the next local commit, synchronize the remote branch when the local working tree is clean (`git pull --ff-only`), to prevent another non-fast-forward push rejection.
+- This progress update is a separate remote docs commit. Before the next local code commit, synchronize remote main when the local working tree is clean (`git pull --ff-only`), to prevent non-fast-forward push rejection.
 
 ## Development Rules
 - Follow pinned DSH source, explain problems and choices before reference code; learner manually implements.
+- Engineering habit: express known data contracts at boundaries; rely on inference for simple local values; validate untrusted file input at runtime. A TypeScript assertion is not a runtime validator.
 - Validate code and existing behavior before each meaningful code commit.
 - Favor small changes and avoid unrelated modifications.
