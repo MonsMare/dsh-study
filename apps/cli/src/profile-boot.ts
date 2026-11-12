@@ -1,6 +1,39 @@
 import { homedir } from "node:os";
-import { join } from "node:path";
-import { readFileSync } from "node:fs";
+import { basename,join } from "node:path";
+import { 
+    readFileSync,
+    existsSync,
+    mkdirSync,
+    writeFileSync
+} from "node:fs";
+
+export function initProfile(
+    dir: string,
+    bundles: readonly string[]
+): void {
+    mkdirSync(dir, { recursive: true });
+
+    const manifestPath = join(dir, "package.json");
+
+    if(!existsSync(manifestPath)){
+        const manifest = {
+            name: `dsh-profile-${basename(dir)}`,
+            private: true,
+            dependences: {},
+            dsh: {
+                profile: {
+                    bundles: [...bundles]
+                }
+            }
+        };
+
+        writeFileSync(
+            manifestPath,
+            JSON.stringify(manifest, null, 2) + "\n",   
+            "utf-8"
+        );
+    }
+}
 
 export interface RunProfileOptions {
     profile: string;
