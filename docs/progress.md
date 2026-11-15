@@ -16,13 +16,14 @@
 - M1-04: Extract profile-boot.ts entry with RunProfileOptions — dfa851a.
 - M1-05: Resolve profile directory from a logical profile name and reject basic invalid names — 0a20a2a. Learner confirmed implementation and understanding.
 - M1-06: Read a JSON profile manifest as `Record<string, unknown>`, checking that the top-level value is a non-array object — 73061df (remote commit verified, learner confirms rebase and push succeeded).
-- M1-07 (partial): Official Profile templates (224dada), manifest initializer (034f9c0), typed manifest and corrected dependencies (747db28), user patch initializer (cdf4d01), corrected `cordis.patch.yml` filename (666821b), per-profile `pnpm-workspace.yaml` initializer (061f344), and missing-profile decision via `ensureProfileInitialized` (63b39d2). Source commits confirmed on GitHub `main`; learner reports the last lesson complete, but terminal test output has not been independently inspected.
+- M1-07: Official Profile templates (224dada), manifest initializer (034f9c0), typed manifest and corrected dependencies (747db28), user patch initializer (cdf4d01), corrected `cordis.patch.yml` filename (666821b), per-profile `pnpm-workspace.yaml` initializer (061f344), and missing-profile decision via `ensureProfileInitialized` (63b39d2). Source commits confirmed on GitHub `main`; learner confirms implementations, local test output not independently observed.
+- M1-08: `loadProfileManifest(name, home)` combines `ensureProfileInitialized` and `readProfileManifest`, and profile-templates import now uses `.ts` for direct Node TypeScript execution — commit 8f9934b verified on GitHub `main`; learner confirms exercise done, local test output not independently observed.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-08 (next): Connect `ensureProfileInitialized` to `readProfileManifest` in a small explicit-home loader/preparation function, retaining `Record<string, unknown>` until bundle data is validated. Fix `profile-boot.ts` import specifier `./profile-templates.js` to `./profile-templates.ts` first: `noEmit` and direct Node TypeScript execution mean there is no emitted `.js` file.
-- Status: M1-07 initialization behavior committed and learner-confirmed; M1-08 not yet implemented. Full bundle resolution, patch composition, and Harness boot are deferred.
+- Current topic: Git `diff` literacy. Learner reports not yet comfortable with `git diff`; teach working tree/index/HEAD comparisons, staging review, and reading hunks using the completed M1-08 commit. No new code change for this topic.
+- Next implementation topic after Git study: validate `dsh.profile.bundles` from unknown JSON before bundle package resolution, then study fixed-upstream `resolveBundleDir` / `loadProfileDirectory`. Full bundle resolution, patch composition, and Harness boot remain deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
 
 ## Source evidence
@@ -32,9 +33,9 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: 63b39d2d6580114c3ebc0ee68b17a2432b9fb557.
+- Latest confirmed study code commit before this docs update: 8f9934be65f0985422057f4eeee1535440f222f5.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). Learner confirms `ensureProfileInitialized` lesson finished; TypeScript checks and temporary-directory test output not independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). Learner confirms `loadProfileManifest` lesson finished; TypeScript checks and temporary-directory test output not independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
