@@ -7,6 +7,12 @@ import {
     writeFileSync
 } from "node:fs";
 
+const PROFILE_PATCH_FILENAME = "cordis.patch.yaml"
+
+const PROFILE_PATCH_TEMPLATE = `# Profile-specific changes applied after bundle layers
+[]
+`;
+
 //类型契约
 interface InitialProfileManifest {
     name: string;
@@ -45,6 +51,17 @@ export function initProfile(
             "utf-8"
         );
     }
+
+    const patchPath = join(dir, PROFILE_PATCH_FILENAME);
+
+    if (!existsSync(patchPath)) {
+        writeFileSync(
+            patchPath,
+            PROFILE_PATCH_TEMPLATE,
+            "utf-8"
+        );
+    }
+
 }
 
 export interface RunProfileOptions {
