@@ -20,11 +20,12 @@
 - M1-08: `loadProfileManifest(name, home)` combines `ensureProfileInitialized` and `readProfileManifest`, and profile-templates import uses `.ts` for direct Node TypeScript execution — commit 8f9934b verified on GitHub `main`; learner confirms exercise done, local test output not independently observed.
 - M1-09: `readProfileBundles()` with runtime guards `isRecord` / `isStringArray` and bundle list in `loadProfileManifest` — commit 42124bf verified on GitHub `main`; local runtime/type-check output not independently observed.
 - M1-10: `packageDirFromAnchor` and exported installation-first `resolveBundleDir` were committed as c7dd78c3ffd688adcd58a4223aa0b0d1009352d1 on GitHub `main`. Learner continued, while noting remaining questions about resolution and requesting a faster learning pace; no local test output independently observed.
+- M1-11: `resolveBundlePatchPaths()` combines two-anchor directory resolution, bundle `package.json` reading, `dsh.bundle.patch` string-or-array normalization, and path joining. GitHub `main` commit 1fca5ddeac42334edda913af43e7dd16fcae7073 verified; local validation output not independently observed.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-11 (next): Use existing `resolveBundleDir` and `readProfileManifest` to read `dsh.bundle.patch` (string or string array), return absolute patch file paths, and validate with a small temporary fake bundle. Fixed upstream evidence: `bundlePatchFiles`, `bundlePatchPaths`, `loadProfileDirectory` in packages/boot/app-boot/src/profile.ts at fcc0ad4. No patch content parsing or plugin mounting yet.
+- M1-12 (next): Assemble a real read-only Profile patch-source loading slice: use `loadProfileManifest` and `resolveBundlePatchPaths` to read each located bundle Patch file's UTF-8 content, collect a user Profile Patch if present, and record skipped bundles without claiming YAML parsing or plugin mount. Fixed upstream evidence: `loadProfileDirectory` from packages/boot/app-boot/src/profile.ts, `loadOverlayPatches` / `parsePatchList` from index.ts at fcc0ad4.
 - Learner requested accelerated functional-slice teaching, minimizing repetitive syntax/excessive testing; defer non-blocking detail and revisit it when code makes the mechanism concrete.
 - Git `diff` literacy remains deferred by learner request until a future real code-change review; teach `git diff` and `git diff --cached` during subsequent commits, without adding a separate exercise. Full patch composition and Harness boot remain deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
@@ -36,13 +37,14 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: c7dd78c3ffd688adcd58a4223aa0b0d1009352d1.
+- Latest confirmed study code commit before this docs update: 1fca5ddeac42334edda913af43e7dd16fcae7073.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-10 source code is committed remotely; local tests/type checks have not been independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-11 source code is committed remotely; local tests/type checks have not been independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
 - Follow pinned DSH source, explain problems and choices before reference code; learner manually implements.
+- **Core learning priority (learner-confirmed, 2026-11-15):** 我们的学习目标是掌握如何构建 Harness，而不是先成为所有 TypeScript 语法的专家。很多语言机制可以在反复参与真实工程的过程中逐渐内化。以实际 Harness 功能链路驱动教学；只深讲当前正确实现所必需的 TS/Node 机制；其他疑问留待相关源码和可运行行为出现时再研究，不把语言知识的穷尽作为进入下一工程环节的前置条件。
 - Engineering habit: express known data contracts at boundaries; rely on inference for simple local values; validate untrusted file input at runtime. A TypeScript assertion is not a runtime validator.
 - Validate code and existing behavior before each meaningful code commit.
 - Favor small changes and avoid unrelated modifications.
