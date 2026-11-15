@@ -21,11 +21,12 @@
 - M1-09: `readProfileBundles()` with runtime guards `isRecord` / `isStringArray` and bundle list in `loadProfileManifest` — commit 42124bf verified on GitHub `main`; local runtime/type-check output not independently observed.
 - M1-10: `packageDirFromAnchor` and exported installation-first `resolveBundleDir` were committed as c7dd78c3ffd688adcd58a4223aa0b0d1009352d1 on GitHub `main`. Learner continued, while noting remaining questions about resolution and requesting a faster learning pace; no local test output independently observed.
 - M1-11: `resolveBundlePatchPaths()` combines two-anchor directory resolution, bundle `package.json` reading, `dsh.bundle.patch` string-or-array normalization, and path joining. GitHub `main` commit 1fca5ddeac42334edda913af43e7dd16fcae7073 verified; local validation output not independently observed.
+- M1-12: `loadProfilePatchSource()` (singular, as implemented) collects UTF-8 bundle Patch sources in declared order, optional user Patch text and skipped Bundle diagnostics. GitHub `main` code commit a981ecce7923de896420652d17d4c40009156fa1 verified; user has not supplied exact local test outputs. This is text collection only, not YAML parsing, composition, or plugin mount.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-12 (next): Assemble a real read-only Profile patch-source loading slice: use `loadProfileManifest` and `resolveBundlePatchPaths` to read each located bundle Patch file's UTF-8 content, collect a user Profile Patch if present, and record skipped bundles without claiming YAML parsing or plugin mount. Fixed upstream evidence: `loadProfileDirectory` from packages/boot/app-boot/src/profile.ts, `loadOverlayPatches` / `parsePatchList` from index.ts at fcc0ad4.
+- M1-13 (next after architecture recap): Convert already collected UTF-8 Patch source text into actual YAML parsed data. Pinned upstream app-boot/src/index.ts calls `yaml.load(content, { schema: entryListSchema })`, checks top-level list and mapping entries, and anchors file-relative plugin paths; plain `js-yaml` DEFAULT_SCHEMA is not equivalent because official include's `entryListSchema` supports `!!js`. Teach the difference and choose a source-backed incremental scope rather than presenting a limited parser as complete.
 - Learner requested accelerated functional-slice teaching, minimizing repetitive syntax/excessive testing; defer non-blocking detail and revisit it when code makes the mechanism concrete.
 - Git `diff` literacy remains deferred by learner request until a future real code-change review; teach `git diff` and `git diff --cached` during subsequent commits, without adding a separate exercise. Full patch composition and Harness boot remain deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
@@ -37,9 +38,9 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: 1fca5ddeac42334edda913af43e7dd16fcae7073.
+- Latest confirmed study code commit before this docs update: a981ecce7923de896420652d17d4c40009156fa1.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-11 source code is committed remotely; local tests/type checks have not been independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-12 source code is committed remotely; local tests/type checks have not been independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
