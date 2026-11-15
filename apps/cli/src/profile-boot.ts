@@ -7,6 +7,7 @@ import {
     writeFileSync
 } from "node:fs";
 import { getProfileTemplate } from "./profile-templates.ts";
+import { createRequire } from "node:module";
 
 const PROFILE_PATCH_FILENAME = "cordis.patch.yml"
 
@@ -229,4 +230,48 @@ function isStringArray(
         value.every(
             (item: unknown) => typeof item === "string"
         );
+}
+
+function packageDirFromAnchor(
+    anchor: string,
+    packageName: string
+): string | undefined {
+    const searchPaths =
+        createRequire(anchor).resolve.paths(packageName) ?? [];
+
+    for (const searchPath of searchPaths) {
+        const candidate = join(searchPath, packageName);
+
+        if(existsSync(join(candidate, "package.json"))){
+            return candidate;
+        }
+    }
+
+    return undefined;
+}
+
+export function resolveBundleDir(
+    binName: string,
+    packageName: string,
+    installAnchor: string,
+    profileDir: string
+): string {
+    const anchors =  [
+        installAnchor,
+        join(profileDir, "package.json"),
+    ];
+
+    for (const anchor of anchors) {
+        const dir = packageDirFromAnchor(anchor, packageName);
+
+        if (dir !== undefined) {
+            return dir;
+        }
+    }
+
+    throw new Error(
+        `${binName}: cannot resolve profile bundle ` +
+        `${JSON.stringify(packageName)} from the dsh installation ` +
+        `or ${profileDir}`
+    );
 }
