@@ -16,13 +16,13 @@
 - M1-04: Extract profile-boot.ts entry with RunProfileOptions — dfa851a.
 - M1-05: Resolve profile directory from a logical profile name and reject basic invalid names — 0a20a2a. Learner confirmed implementation and understanding.
 - M1-06: Read a JSON profile manifest as `Record<string, unknown>`, checking that the top-level value is a non-array object — 73061df (remote commit verified, learner confirms rebase and push succeeded).
-- M1-07 (partial): Official Profile templates (224dada), manifest initializer (034f9c0), typed manifest and corrected dependencies (747db28), and initializer for user patch file (cdf4d01). All source commits confirmed on GitHub; local test output not independently verified.
+- M1-07 (partial): Official Profile templates (224dada), manifest initializer (034f9c0), typed manifest and corrected dependencies (747db28), user patch initializer (cdf4d01), corrected `cordis.patch.yml` filename (666821b), and per-profile `pnpm-workspace.yaml` initializer (061f344). Code commits confirmed on GitHub `main`. Learner reports preceding lesson done; local TypeScript/runtime validation output was not independently observed.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-07: Correct filename mismatch in apps/cli/src/profile-boot.ts (`PROFILE_PATCH_FILENAME` is currently `cordis.patch.yaml`, but pinned upstream uses `cordis.patch.yml`); verify initialization in a temporary directory, then add pnpm-workspace.yaml and missing-profile logic.
-- Status: in progress; patch-file initializer code is committed but contains a filename mismatch. Do not mark complete until fixed and validated.
+- M1-07: Implement the missing-profile decision from pinned upstream `loadProfile`: if `package.json` is missing and the requested name is an official template, initialize its manifest/patch/workspace; if the name is custom, throw without creating a profile. Preserve existing manifests. Keep this as a small, testable preparation step; full profile loading is not yet implemented.
+- Status: in progress; profile file initializers are committed, but missing-profile decision and real boot integration are not yet implemented.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
 
 ## Source evidence
@@ -32,10 +32,10 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit: cdf4d01abe71999e3b2309f8220af8829427447e.
+- Latest confirmed study code commit before this docs update: 061f344937582a83c3209aa3f2f9e8500dcf6a09.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state and test outputs: unknown.
-- This progress update is a separate remote docs commit. Before the next local code commit, check `git status -sb` then synchronize remote main (`git pull --ff-only`) only if working tree is clean; never force push or guess through an unfinished rebase.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). Learner reports prior exercise complete; exact local test results not independently verified.
+- This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
 - Follow pinned DSH source, explain problems and choices before reference code; learner manually implements.
