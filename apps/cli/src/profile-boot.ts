@@ -310,3 +310,74 @@ export function resolveBundlePatchPaths(
 
     return files.map(file => join(packageDir, file));
 }
+
+export type ProfilePatchSources = {
+    dir: string ,
+    bundleLayers: Array<{
+        packageName: string;
+        files: Array<{
+            path: string,
+            content: string;
+        }>;
+    }>;
+    userPatch?: {
+        path: string ;
+        content: string;
+    };
+    skippedBundles: Array<{
+        packageName: string;
+        reason: string;
+    }>
+};
+
+export function loadProfilePatchSource(
+    name: string,
+    home: string,
+    installAnchor: string
+): ProfilePatchSources {
+    const { dir, bundles } = loadProfileManifest(name,home);
+
+    const result: ProfilePatchSources = {
+        dir,
+        bundleLayers: [],
+        skippedBundles: []
+    };
+
+    for (const packageName of bundles){
+        try {
+            const paths = resolveBundlePatchPaths(
+                packageName,
+                installAnchor,
+                dir
+            );
+
+            const files = paths.map(path =>  ({
+                path,
+                content: readFileSync(path, "utf-8")
+            }));
+
+            result.bundleLayers.push({
+                packageName,
+                files
+            });
+
+        }catch(error){
+            result.skippedBundles.push({
+                packageName,
+                reason: String(error)
+            });
+        }
+    }
+
+    const userPath = join(dir, PROFILE_PATCH_FILENAME);
+
+    if(existsSync(userPath)){
+        result.userPatch = {
+            path: userPath,
+            content: readFileSync(userPath, "utf-8")
+        }
+    }
+
+    return result
+
+}
