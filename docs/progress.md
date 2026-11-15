@@ -1,7 +1,7 @@
 # DSH Study — Learning Progress
 
 > Maintainer: AI study tutor. Record confirmed facts separately from unverified tests.
-> Last reviewed: 2026-11-12 (type-contract lesson).
+> Last reviewed: 2026-11-15 (cross-conversation handoff).
 
 ## Upstream
 - Repository: deepseek-ai/deepseek-harness
@@ -16,13 +16,13 @@
 - M1-04: Extract profile-boot.ts entry with RunProfileOptions — dfa851a.
 - M1-05: Resolve profile directory from a logical profile name and reject basic invalid names — 0a20a2a. Learner confirmed implementation and understanding.
 - M1-06: Read a JSON profile manifest as `Record<string, unknown>`, checking that the top-level value is a non-array object — 73061df (remote commit verified, learner confirms rebase and push succeeded).
-- M1-07 (partial): Define official Profile templates (224dada); write the initial package.json without overwriting existing manifest (034f9c0); add an explicit InitialProfileManifest contract and fix `dependencies` field spelling (747db28). Source verified on remote, user confirms latest fix; local test output not independently verified.
+- M1-07 (partial): Official Profile templates (224dada), manifest initializer (034f9c0), typed manifest and corrected dependencies (747db28), and initializer for user patch file (cdf4d01). All source commits confirmed on GitHub; local test output not independently verified.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-07: Finish Profile initialization (cordis.patch.yml and pnpm-workspace.yaml), then implement missing-profile decision logic for official vs custom profiles with isolated tests.
-- Status: in progress; manifest-only initializer and template table confirmed on GitHub.
+- M1-07: Correct filename mismatch in apps/cli/src/profile-boot.ts (`PROFILE_PATCH_FILENAME` is currently `cordis.patch.yaml`, but pinned upstream uses `cordis.patch.yml`); verify initialization in a temporary directory, then add pnpm-workspace.yaml and missing-profile logic.
+- Status: in progress; patch-file initializer code is committed but contains a filename mismatch. Do not mark complete until fixed and validated.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
 
 ## Source evidence
@@ -32,13 +32,14 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit: 747db28e73e130b09c8b9afae76edf8b800e2f65.
+- Latest confirmed study code commit: cdf4d01abe71999e3b2309f8220af8829427447e.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
 - Local working-tree state and test outputs: unknown.
-- This progress update is a separate remote docs commit. Before the next local code commit, synchronize remote main when the local working tree is clean (`git pull --ff-only`), to prevent non-fast-forward push rejection.
+- This progress update is a separate remote docs commit. Before the next local code commit, check `git status -sb` then synchronize remote main (`git pull --ff-only`) only if working tree is clean; never force push or guess through an unfinished rebase.
 
 ## Development Rules
 - Follow pinned DSH source, explain problems and choices before reference code; learner manually implements.
 - Engineering habit: express known data contracts at boundaries; rely on inference for simple local values; validate untrusted file input at runtime. A TypeScript assertion is not a runtime validator.
 - Validate code and existing behavior before each meaningful code commit.
 - Favor small changes and avoid unrelated modifications.
+- Teach safe Git habits as part of every lesson: inspect status and diffs, check staged diff, explain fetch/ff-only/rebase/merge only as necessary, commit scoped changes, and avoid `--force`, `reset --hard`, or unsafe conflict resolution. Coordinate AI-authored progress commits to avoid surprising remote divergence.
