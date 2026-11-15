@@ -17,13 +17,14 @@
 - M1-05: Resolve profile directory from a logical profile name and reject basic invalid names — 0a20a2a. Learner confirmed implementation and understanding.
 - M1-06: Read a JSON profile manifest as `Record<string, unknown>`, checking that the top-level value is a non-array object — 73061df (remote commit verified, learner confirms rebase and push succeeded).
 - M1-07: Official Profile templates (224dada), manifest initializer (034f9c0), typed manifest and corrected dependencies (747db28), user patch initializer (cdf4d01), corrected `cordis.patch.yml` filename (666821b), per-profile `pnpm-workspace.yaml` initializer (061f344), and missing-profile decision via `ensureProfileInitialized` (63b39d2). Source commits confirmed on GitHub `main`; learner confirms implementations, local test output not independently observed.
-- M1-08: `loadProfileManifest(name, home)` combines `ensureProfileInitialized` and `readProfileManifest`, and profile-templates import now uses `.ts` for direct Node TypeScript execution — commit 8f9934b verified on GitHub `main`; learner confirms exercise done, local test output not independently observed.
+- M1-08: `loadProfileManifest(name, home)` combines `ensureProfileInitialized` and `readProfileManifest`, and profile-templates import uses `.ts` for direct Node TypeScript execution — commit 8f9934b verified on GitHub `main`; learner confirms exercise done, local test output not independently observed.
+- M1-09: `readProfileBundles()` with runtime guards `isRecord` / `isStringArray` and bundle list in `loadProfileManifest` — commit 42124bf verified on GitHub `main`; learner proceeded to next lesson, local runtime/type-check output not independently observed.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- Current topic: Git `diff` literacy. Learner reports not yet comfortable with `git diff`; teach working tree/index/HEAD comparisons, staging review, and reading hunks using the completed M1-08 commit. No new code change for this topic.
-- Next implementation topic after Git study: validate `dsh.profile.bundles` from unknown JSON before bundle package resolution, then study fixed-upstream `resolveBundleDir` / `loadProfileDirectory`. Full bundle resolution, patch composition, and Harness boot remain deferred.
+- M1-10 (in progress): Reproduce pinned-upstream package-directory lookup using `createRequire(anchor).resolve.paths(...)` and two-anchor `resolveBundleDir` (installation first, Profile second). Preserve distinction between locating a package manifest and importing/mounting a plugin. Do not access the user's real `~/.dsh`.
+- Git `diff` literacy remains deferred by learner request until a future real code-change review; teach `git diff` and `git diff --cached` during subsequent commits, without adding a separate exercise. Full patch composition and Harness boot remain deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
 
 ## Source evidence
@@ -33,9 +34,9 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: 8f9934be65f0985422057f4eeee1535440f222f5.
+- Latest confirmed study code commit before this docs update: 42124bf6b853f0ebfaedd672fc2d3a9dbc889a31.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). Learner confirms `loadProfileManifest` lesson finished; TypeScript checks and temporary-directory test output not independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-09 source code is committed remotely; local tests/type checks have not been independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
