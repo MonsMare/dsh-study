@@ -6,7 +6,7 @@ import {
     mkdirSync,
     writeFileSync
 } from "node:fs";
-import { getProfileTemplate } from "./profile-templates.js";
+import { getProfileTemplate } from "./profile-templates.ts";
 
 const PROFILE_PATCH_FILENAME = "cordis.patch.yml"
 
@@ -129,6 +129,22 @@ export function readProfileManifest(
 
     return value as Record<string, unknown>;
 
+}
+
+export function loadProfileManifest(
+    name: string,
+    home: string
+): {
+    dir: string;
+    manifest: Record<string, unknown>;
+} {
+    const dir = ensureProfileInitialized(name, home);
+    const manifest = readProfileManifest(dir);
+
+    return {
+        dir,
+        manifest
+    };
 }
 
 export function resolveProfileDir(
