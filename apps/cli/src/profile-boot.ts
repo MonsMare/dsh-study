@@ -7,7 +7,7 @@ import {
     writeFileSync
 } from "node:fs";
 
-const PROFILE_PATCH_FILENAME = "cordis.patch.yaml"
+const PROFILE_PATCH_FILENAME = "cordis.patch.yml"
 
 const PROFILE_PATCH_TEMPLATE = `# Profile-specific changes applied after bundle layers
 []
