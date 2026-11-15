@@ -275,3 +275,38 @@ export function resolveBundleDir(
         `or ${profileDir}`
     );
 }
+
+export function resolveBundlePatchPaths(
+    packageName: string,
+    installAnchor: string,
+    profileDir: string
+): string[]{
+     const packageDir = resolveBundleDir(
+        "dsh",
+        packageName,
+        installAnchor,
+        profileDir
+    );
+
+    const manifest = readProfileManifest(packageDir);
+    const dsh = manifest["dsh"];
+
+    if(!isRecord(dsh) || !isRecord(dsh["bundle"])) {
+        throw new Error(
+            `dsh: bundle ${packageName} does not declare dsh.bundle`
+        );
+    }
+
+    const declared = dsh["bundle"]["patch"];
+
+    const files =  
+        typeof declared === "string"?[declared]:declared
+
+    if (!isStringArray(files)) {
+        throw new Error(
+            "dsh.bundle.patch must be a file path or an array of paths"
+        );
+    }
+
+    return files.map(file => join(packageDir, file));
+}
