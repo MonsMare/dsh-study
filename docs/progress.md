@@ -16,13 +16,13 @@
 - M1-04: Extract profile-boot.ts entry with RunProfileOptions — dfa851a.
 - M1-05: Resolve profile directory from a logical profile name and reject basic invalid names — 0a20a2a. Learner confirmed implementation and understanding.
 - M1-06: Read a JSON profile manifest as `Record<string, unknown>`, checking that the top-level value is a non-array object — 73061df (remote commit verified, learner confirms rebase and push succeeded).
-- M1-07 (partial): Official Profile templates (224dada), manifest initializer (034f9c0), typed manifest and corrected dependencies (747db28), user patch initializer (cdf4d01), corrected `cordis.patch.yml` filename (666821b), and per-profile `pnpm-workspace.yaml` initializer (061f344). Code commits confirmed on GitHub `main`. Learner reports preceding lesson done; local TypeScript/runtime validation output was not independently observed.
+- M1-07 (partial): Official Profile templates (224dada), manifest initializer (034f9c0), typed manifest and corrected dependencies (747db28), user patch initializer (cdf4d01), corrected `cordis.patch.yml` filename (666821b), per-profile `pnpm-workspace.yaml` initializer (061f344), and missing-profile decision via `ensureProfileInitialized` (63b39d2). Source commits confirmed on GitHub `main`; learner reports the last lesson complete, but terminal test output has not been independently inspected.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-07: Implement the missing-profile decision from pinned upstream `loadProfile`: if `package.json` is missing and the requested name is an official template, initialize its manifest/patch/workspace; if the name is custom, throw without creating a profile. Preserve existing manifests. Keep this as a small, testable preparation step; full profile loading is not yet implemented.
-- Status: in progress; profile file initializers are committed, but missing-profile decision and real boot integration are not yet implemented.
+- M1-08 (next): Connect `ensureProfileInitialized` to `readProfileManifest` in a small explicit-home loader/preparation function, retaining `Record<string, unknown>` until bundle data is validated. Fix `profile-boot.ts` import specifier `./profile-templates.js` to `./profile-templates.ts` first: `noEmit` and direct Node TypeScript execution mean there is no emitted `.js` file.
+- Status: M1-07 initialization behavior committed and learner-confirmed; M1-08 not yet implemented. Full bundle resolution, patch composition, and Harness boot are deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
 
 ## Source evidence
@@ -32,9 +32,9 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: 061f344937582a83c3209aa3f2f9e8500dcf6a09.
+- Latest confirmed study code commit before this docs update: 63b39d2d6580114c3ebc0ee68b17a2432b9fb557.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). Learner reports prior exercise complete; exact local test results not independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). Learner confirms `ensureProfileInitialized` lesson finished; TypeScript checks and temporary-directory test output not independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
