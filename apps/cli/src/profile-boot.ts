@@ -13,6 +13,13 @@ const PROFILE_PATCH_TEMPLATE = `# Profile-specific changes applied after bundle 
 []
 `;
 
+const PROFILE_PNPM_WORKSPACE = `packages:
+    - .
+
+nodeLinker: hoisted
+autoInstallPeers: false
+`;
+
 //类型契约
 interface InitialProfileManifest {
     name: string;
@@ -58,6 +65,16 @@ export function initProfile(
         writeFileSync(
             patchPath,
             PROFILE_PATCH_TEMPLATE,
+            "utf-8"
+        );
+    }
+
+    const workspacePath = join(dir, "pnpm-workspace.yaml");
+
+    if (!existsSync(workspacePath)) {
+        writeFileSync(
+            workspacePath,
+            PROFILE_PNPM_WORKSPACE,
             "utf-8"
         );
     }
