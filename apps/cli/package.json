@@ -6,7 +6,11 @@
         "dev": "node ./src/bin.ts"
     },
     "devDependencies": {
+        "@types/js-yaml": "^4.0.9",
         "@types/node": "^24.19.2",
         "typescript": "^7.0.2"
+    },
+    "dependencies": {
+        "js-yaml": "^4.3.2"
     }
 }

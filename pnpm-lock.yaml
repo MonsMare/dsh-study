@@ -9,7 +9,14 @@ importers:
   .: {}
 
   apps/cli:
+    dependencies:
+      js-yaml:
+        specifier: ^4.3.2
+        version: 4.3.2
     devDependencies:
+      '@types/js-yaml':
+        specifier: ^4.0.9
+        version: 4.0.9
       '@types/node':
         specifier: ^24.19.2
         version: 24.19.2
@@ -18,6 +25,9 @@ importers:
         version: 7.0.2
 
 packages:
+
+  '@types/js-yaml@4.0.9':
+    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
 
   '@types/node@24.19.2':
     resolution: {integrity: sha512-93d49wCWJkCyN87MxLpNN6KXPCwFw7bVUg79mGUV1OS40JGWwVCr8n61DXCSqz7CV6/VfPkb7xec7uP2M+QHWQ==}
@@ -142,6 +152,13 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  argparse@2.0.1:
+    resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
+
+  js-yaml@4.3.2:
+    resolution: {integrity: sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA==}
+    hasBin: true
+
   typescript@7.0.2:
     resolution: {integrity: sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==}
     engines: {node: '>=16.20.0'}
@@ -151,6 +168,8 @@ packages:
     resolution: {integrity: sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==}
 
 snapshots:
+
+  '@types/js-yaml@4.0.9': {}
 
   '@types/node@24.19.2':
     dependencies:
@@ -215,6 +234,12 @@ snapshots:
 
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
+
+  argparse@2.0.1: {}
+
+  js-yaml@4.3.2:
+    dependencies:
+      argparse: 2.0.1
 
   typescript@7.0.2:
     optionalDependencies:
