@@ -18,12 +18,14 @@
 - M1-06: Read a JSON profile manifest as `Record<string, unknown>`, checking that the top-level value is a non-array object — 73061df (remote commit verified, learner confirms rebase and push succeeded).
 - M1-07: Official Profile templates (224dada), manifest initializer (034f9c0), typed manifest and corrected dependencies (747db28), user patch initializer (cdf4d01), corrected `cordis.patch.yml` filename (666821b), per-profile `pnpm-workspace.yaml` initializer (061f344), and missing-profile decision via `ensureProfileInitialized` (63b39d2). Source commits confirmed on GitHub `main`; learner confirms implementations, local test output not independently observed.
 - M1-08: `loadProfileManifest(name, home)` combines `ensureProfileInitialized` and `readProfileManifest`, and profile-templates import uses `.ts` for direct Node TypeScript execution — commit 8f9934b verified on GitHub `main`; learner confirms exercise done, local test output not independently observed.
-- M1-09: `readProfileBundles()` with runtime guards `isRecord` / `isStringArray` and bundle list in `loadProfileManifest` — commit 42124bf verified on GitHub `main`; learner proceeded to next lesson, local runtime/type-check output not independently observed.
+- M1-09: `readProfileBundles()` with runtime guards `isRecord` / `isStringArray` and bundle list in `loadProfileManifest` — commit 42124bf verified on GitHub `main`; local runtime/type-check output not independently observed.
+- M1-10: `packageDirFromAnchor` and exported installation-first `resolveBundleDir` were committed as c7dd78c3ffd688adcd58a4223aa0b0d1009352d1 on GitHub `main`. Learner continued, while noting remaining questions about resolution and requesting a faster learning pace; no local test output independently observed.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-10 (in progress): Reproduce pinned-upstream package-directory lookup using `createRequire(anchor).resolve.paths(...)` and two-anchor `resolveBundleDir` (installation first, Profile second). Preserve distinction between locating a package manifest and importing/mounting a plugin. Do not access the user's real `~/.dsh`.
+- M1-11 (next): Use existing `resolveBundleDir` and `readProfileManifest` to read `dsh.bundle.patch` (string or string array), return absolute patch file paths, and validate with a small temporary fake bundle. Fixed upstream evidence: `bundlePatchFiles`, `bundlePatchPaths`, `loadProfileDirectory` in packages/boot/app-boot/src/profile.ts at fcc0ad4. No patch content parsing or plugin mounting yet.
+- Learner requested accelerated functional-slice teaching, minimizing repetitive syntax/excessive testing; defer non-blocking detail and revisit it when code makes the mechanism concrete.
 - Git `diff` literacy remains deferred by learner request until a future real code-change review; teach `git diff` and `git diff --cached` during subsequent commits, without adding a separate exercise. Full patch composition and Harness boot remain deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
 
@@ -34,9 +36,9 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: 42124bf6b853f0ebfaedd672fc2d3a9dbc889a31.
+- Latest confirmed study code commit before this docs update: c7dd78c3ffd688adcd58a4223aa0b0d1009352d1.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-09 source code is committed remotely; local tests/type checks have not been independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-10 source code is committed remotely; local tests/type checks have not been independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
