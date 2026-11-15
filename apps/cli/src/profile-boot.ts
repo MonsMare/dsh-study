@@ -6,6 +6,7 @@ import {
     mkdirSync,
     writeFileSync
 } from "node:fs";
+import { getProfileTemplate } from "./profile-templates.js";
 
 const PROFILE_PATCH_FILENAME = "cordis.patch.yml"
 
@@ -79,6 +80,28 @@ export function initProfile(
         );
     }
 
+}
+
+export function ensureProfileInitialized(
+    name: string,
+    home: string
+): string {
+    const dir = resolveProfileDir(name, home);
+    const manifestPath = join(dir, "package.json");
+
+    if (!existsSync(manifestPath)) {
+        const template = getProfileTemplate(name);
+
+        if (template === undefined) {
+            throw new Error(
+                `dsh: profile ${JSON.stringify(name)} does not exist`
+            );
+        }
+
+        initProfile(dir, template.bundles);
+    }
+
+    return dir;
 }
 
 export interface RunProfileOptions {
