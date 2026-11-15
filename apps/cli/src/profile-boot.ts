@@ -137,14 +137,53 @@ export function loadProfileManifest(
 ): {
     dir: string;
     manifest: Record<string, unknown>;
+    bundles: readonly string[];
 } {
     const dir = ensureProfileInitialized(name, home);
     const manifest = readProfileManifest(dir);
+    const bundles = readProfileBundles(manifest);
 
     return {
         dir,
-        manifest
+        manifest,
+        bundles
     };
+}
+
+export function readProfileBundles(
+    manifest: Record<string, unknown>
+):readonly string[] {
+    const dsh = manifest["dsh"];
+
+    if(dsh === undefined ){
+        return [];
+    }
+
+    if(!isRecord(dsh)){
+        throw new Error("dsh: manifest.dsh must be an object"); 
+    }
+
+    const profile = dsh["profile"];
+    
+    if (profile === undefined) {
+        return [];
+    }
+
+    if (!isRecord(profile)) {
+        throw new Error("dsh: manifest.dsh.profile must be an object");
+    }
+
+    const bundles = profile["bundles"];
+
+    if (bundles === undefined) {
+        return [];
+    }
+
+    if (!isStringArray(bundles)) {
+        throw new Error("dsh: manifest.dsh.profile.bundles must be an array of strings");
+    }
+
+    return bundles;
 }
 
 export function resolveProfileDir(
@@ -173,4 +212,21 @@ export function runProfile(options: RunProfileOptions): void {
     console.log("Starting profile:", options.profile);
     console.log("Arguments:", options.args);
     console.log("Profile directory:", profileDir);
+}
+
+function isRecord(
+    value: unknown
+): value is Record<string, unknown> {
+    return value !== null &&
+        typeof value === "object" &&
+        !Array.isArray(value);
+}
+
+function isStringArray(
+    value: unknown  
+): value is string[] {
+    return Array.isArray(value) &&
+        value.every(
+            (item: unknown) => typeof item === "string"
+        );
 }
