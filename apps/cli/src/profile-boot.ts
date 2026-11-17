@@ -8,6 +8,7 @@ import {
 } from "node:fs";
 import { getProfileTemplate } from "./profile-templates.ts";
 import { createRequire } from "node:module";
+import { parsePatchList } from "./patch-parser.ts";
 
 const PROFILE_PATCH_FILENAME = "cordis.patch.yml"
 
@@ -319,10 +320,12 @@ export type ProfilePatchSources = {
             path: string,
             content: string;
         }>;
+        patches: Record<string, unknown>[];
     }>;
     userPatch?: {
         path: string ;
         content: string;
+        patches: Record<string, unknown>[];
     };
     skippedBundles: Array<{
         packageName: string;
@@ -356,9 +359,14 @@ export function loadProfilePatchSource(
                 content: readFileSync(path, "utf-8")
             }));
 
+            const patches = files.flatMap(
+                file => parsePatchList(file.path, file.content)
+            );
+
             result.bundleLayers.push({
                 packageName,
-                files
+                files,
+                patches
             });
 
         }catch(error){
@@ -372,9 +380,12 @@ export function loadProfilePatchSource(
     const userPath = join(dir, PROFILE_PATCH_FILENAME);
 
     if(existsSync(userPath)){
+
+        const content = readFileSync(userPath, "utf-8");
         result.userPatch = {
             path: userPath,
-            content: readFileSync(userPath, "utf-8")
+            content,
+            patches: parsePatchList(userPath, content)
         }
     }
 
