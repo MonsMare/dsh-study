@@ -25,11 +25,12 @@
 - M1-13: `apps/cli/src/patch-parser.ts` introduced `parsePatchList()` with `js-yaml`, JSON_SCHEMA extension for `!!js` expression objects, top-level YAML array and mapping-entry checks; dependencies `js-yaml` and `@types/js-yaml` are present in CLI package. Code commit 69e900342d4419ab2900fa65a069274d9a19b43d verified on GitHub `main`. Learner confirms understanding of arrow functions and asks to continue; no local test output independently observed.
 - M1-14: `apps/cli/src/profile-boot.ts` now imports `parsePatchList`, stores parsed `patches` per successful Bundle layer and the optional user Patch, and collects per-bundle parse failures in `skippedBundles` while propagating user Patch errors. Code commit efda9a6c663ad2ef49f3fddfe7cc7395fb7e339c verified on GitHub `main`; learner moved on, but local test output not independently observed.
 - M1-15: `apps/cli/src/patch-composer.ts` implements teaching subset of official Cordis Include patch application: root/group insertion, by-id tracking, overriding fields with `Object.assign`, warnings for invalid/missing targets and cloned inserted entries. GitHub `main` commit a36196381d242a3187878910efe811498d7a5ff4 verified. Learner confirmed understanding of the reason for Patch vs Entry and asked to continue; exact local test output not independently observed.
+- M1-16: `apps/cli/src/profile-composition.ts` now exports `composeProfile` and `ProfileComposition`, composing ordered Bundle patch arrays before the user patch and returning entries, warnings, loaded/skipped Bundles, and directory. GitHub `main` commit 47563d2af08b78ca5b79b510b855c50653168712 verified; user asks architectural boundaries next, local test output not independently observed.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-16 (next): Add a Profile composition entrypoint coordinating `loadProfilePatchSource` and `composeEntries`: collect each Bundle's parsed patches in declared order, append user Patch last, and return composed Entries along with separate skipped Bundle errors vs composition warnings. Validate with temporary fake Profile and Bundle, never real `~/.dsh`; later wire into CLI diagnostics/Loader. Reference pinned upstream `packages/boot/app-boot/src/profile.ts` (`loadProfileDirectory`, `composeEntries`) and `vendor/include/src/patch.ts`. Full schema and runtime/plugin mount deferred.
+- M1-17 (next): Wire the existing `--dump-config` CLI path to actual read-only `composeProfile` output behind an explicitly scoped diagnostic mode, preserving safe injected home/install anchors and existing dump-mode behavior until tested. Review upstream app-boot/src/index.ts config-dump flow and existing study CLI args/bin/dump-config first; do not mislabel JSON preview as official Cordis YAML dump. First discuss separation of concerns and orchestration at user request; no new code assignment in that discussion.
 - Learner requested accelerated functional-slice teaching, minimizing repetitive syntax/excessive testing; defer non-blocking detail and revisit it when code makes the mechanism concrete.
 - Git `diff` literacy remains deferred by learner request until a future real code-change review; teach `git diff` and `git diff --cached` during subsequent commits, without adding a separate exercise. Full patch composition and Harness boot remain deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
@@ -41,9 +42,9 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: a36196381d242a3187878910efe811498d7a5ff4.
+- Latest confirmed study code commit before this docs update: 47563d2af08b78ca5b79b510b855c50653168712.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-15 source code is committed remotely; local tests/type checks have not been independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-16 source code is committed remotely; local tests/type checks have not been independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
