@@ -22,11 +22,12 @@
 - M1-10: `packageDirFromAnchor` and exported installation-first `resolveBundleDir` were committed as c7dd78c3ffd688adcd58a4223aa0b0d1009352d1 on GitHub `main`. Learner continued, while noting remaining questions about resolution and requesting a faster learning pace; no local test output independently observed.
 - M1-11: `resolveBundlePatchPaths()` combines two-anchor directory resolution, bundle `package.json` reading, `dsh.bundle.patch` string-or-array normalization, and path joining. GitHub `main` commit 1fca5ddeac42334edda913af43e7dd16fcae7073 verified; local validation output not independently observed.
 - M1-12: `loadProfilePatchSource()` (singular, as implemented) collects UTF-8 bundle Patch sources in declared order, optional user Patch text and skipped Bundle diagnostics. GitHub `main` code commit a981ecce7923de896420652d17d4c40009156fa1 verified; user has not supplied exact local test outputs. This is text collection only, not YAML parsing, composition, or plugin mount.
+- M1-13: `apps/cli/src/patch-parser.ts` introduced `parsePatchList()` with `js-yaml`, JSON_SCHEMA extension for `!!js` expression objects, top-level YAML array and mapping-entry checks; dependencies `js-yaml` and `@types/js-yaml` are present in CLI package. Code commit 69e900342d4419ab2900fa65a069274d9a19b43d verified on GitHub `main`. Learner confirms understanding of arrow functions and asks to continue; no local test output independently observed.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-13 (next after architecture recap): Convert already collected UTF-8 Patch source text into actual YAML parsed data. Pinned upstream app-boot/src/index.ts calls `yaml.load(content, { schema: entryListSchema })`, checks top-level list and mapping entries, and anchors file-relative plugin paths; plain `js-yaml` DEFAULT_SCHEMA is not equivalent because official include's `entryListSchema` supports `!!js`. Teach the difference and choose a source-backed incremental scope rather than presenting a limited parser as complete.
+- M1-14 (next): Wire `parsePatchList(file.path, file.content)` into existing `loadProfilePatchSource()`: add `patches` arrays on successful bundle layers and optional user patch; keep bundle parse errors in `skippedBundles` and propagate user patch errors. Preserve ordered parsing via `flatMap`, no real Cordis mount. Upstream basis: app-boot/src/profile.ts `loadProfileDirectory` and app-boot/src/index.ts `loadOverlayPatches` / `parsePatchList` at pinned commit. Note unimplemented source-path anchoring, loader-specific validation, and actual `applyEntryPatches`.
 - Learner requested accelerated functional-slice teaching, minimizing repetitive syntax/excessive testing; defer non-blocking detail and revisit it when code makes the mechanism concrete.
 - Git `diff` literacy remains deferred by learner request until a future real code-change review; teach `git diff` and `git diff --cached` during subsequent commits, without adding a separate exercise. Full patch composition and Harness boot remain deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
@@ -38,9 +39,9 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: a981ecce7923de896420652d17d4c40009156fa1.
+- Latest confirmed study code commit before this docs update: 69e900342d4419ab2900fa65a069274d9a19b43d.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-12 source code is committed remotely; local tests/type checks have not been independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-13 source code is committed remotely; local tests/type checks have not been independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
