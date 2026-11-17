@@ -23,11 +23,12 @@
 - M1-11: `resolveBundlePatchPaths()` combines two-anchor directory resolution, bundle `package.json` reading, `dsh.bundle.patch` string-or-array normalization, and path joining. GitHub `main` commit 1fca5ddeac42334edda913af43e7dd16fcae7073 verified; local validation output not independently observed.
 - M1-12: `loadProfilePatchSource()` (singular, as implemented) collects UTF-8 bundle Patch sources in declared order, optional user Patch text and skipped Bundle diagnostics. GitHub `main` code commit a981ecce7923de896420652d17d4c40009156fa1 verified; user has not supplied exact local test outputs. This is text collection only, not YAML parsing, composition, or plugin mount.
 - M1-13: `apps/cli/src/patch-parser.ts` introduced `parsePatchList()` with `js-yaml`, JSON_SCHEMA extension for `!!js` expression objects, top-level YAML array and mapping-entry checks; dependencies `js-yaml` and `@types/js-yaml` are present in CLI package. Code commit 69e900342d4419ab2900fa65a069274d9a19b43d verified on GitHub `main`. Learner confirms understanding of arrow functions and asks to continue; no local test output independently observed.
+- M1-14: `apps/cli/src/profile-boot.ts` now imports `parsePatchList`, stores parsed `patches` per successful Bundle layer and the optional user Patch, and collects per-bundle parse failures in `skippedBundles` while propagating user Patch errors. Code commit efda9a6c663ad2ef49f3fddfe7cc7395fb7e339c verified on GitHub `main`; learner moved on, but local test output not independently observed.
 
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- M1-14 (next): Wire `parsePatchList(file.path, file.content)` into existing `loadProfilePatchSource()`: add `patches` arrays on successful bundle layers and optional user patch; keep bundle parse errors in `skippedBundles` and propagate user patch errors. Preserve ordered parsing via `flatMap`, no real Cordis mount. Upstream basis: app-boot/src/profile.ts `loadProfileDirectory` and app-boot/src/index.ts `loadOverlayPatches` / `parsePatchList` at pinned commit. Note unimplemented source-path anchoring, loader-specific validation, and actual `applyEntryPatches`.
+- M1-15 (next): Implement a source-guided subset of upstream Cordis Include `applyPatches` / `applyEntryPatches` with root insert, id-targeted overrides, disabled flag and warnings; maintain ordered composition without claiming full Loader mount. Source: pinned upstream `vendor/include/src/patch.ts`, `packages/boot/app-boot/src/profile.ts` `composeEntries`. Full schema and runtime/plugin mount deferred.
 - Learner requested accelerated functional-slice teaching, minimizing repetitive syntax/excessive testing; defer non-blocking detail and revisit it when code makes the mechanism concrete.
 - Git `diff` literacy remains deferred by learner request until a future real code-change review; teach `git diff` and `git diff --cached` during subsequent commits, without adding a separate exercise. Full patch composition and Harness boot remain deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
@@ -39,9 +40,9 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: 69e900342d4419ab2900fa65a069274d9a19b43d.
+- Latest confirmed study code commit before this docs update: efda9a6c663ad2ef49f3fddfe7cc7395fb7e339c.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-13 source code is committed remotely; local tests/type checks have not been independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-14 source code is committed remotely; local tests/type checks have not been independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
