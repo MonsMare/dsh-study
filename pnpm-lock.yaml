@@ -6,10 +6,63 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      '@study/cordis-plugin-include':
+        specifier: workspace:*
+        version: link:vendor/include
+      '@study/dsh-app-boot':
+        specifier: workspace:*
+        version: link:packages/boot/app-boot
+      '@types/js-yaml':
+        specifier: ^4.0.9
+        version: 4.0.9
+      '@types/node':
+        specifier: ^24.19.2
+        version: 24.19.2
+      js-yaml:
+        specifier: ^4.3.2
+        version: 4.3.2
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
 
   apps/cli:
     dependencies:
+      '@study/dsh-app-boot':
+        specifier: workspace:*
+        version: link:../../packages/boot/app-boot
+      '@study/dsh-home-paths':
+        specifier: workspace:*
+        version: link:../../packages/util/home-paths
+      commander:
+        specifier: ^15.0.0
+        version: 15.1.0
+    devDependencies:
+      '@types/node':
+        specifier: ^24.19.2
+        version: 24.19.2
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+
+  packages/boot/app-boot:
+    dependencies:
+      '@study/cordis-plugin-include':
+        specifier: workspace:*
+        version: link:../../../vendor/include
+      '@study/cordis-plugin-loader':
+        specifier: workspace:*
+        version: link:../../../vendor/loader
+      '@study/dsh-home-paths':
+        specifier: workspace:*
+        version: link:../../util/home-paths
+      '@study/dsh-official-bundles':
+        specifier: workspace:*
+        version: link:../../util/official-bundles
+      '@study/dsh-package-manifest':
+        specifier: workspace:*
+        version: link:../../util/package-manifest
       js-yaml:
         specifier: ^4.3.2
         version: 4.3.2
@@ -17,12 +70,27 @@ importers:
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
-      '@types/node':
-        specifier: ^24.19.2
-        version: 24.19.2
-      typescript:
-        specifier: ^7.0.2
-        version: 7.0.2
+
+  packages/util/home-paths: {}
+
+  packages/util/official-bundles: {}
+
+  packages/util/package-manifest: {}
+
+  vendor/include:
+    dependencies:
+      '@study/cordis-plugin-loader':
+        specifier: workspace:*
+        version: link:../loader
+      js-yaml:
+        specifier: ^4.3.2
+        version: 4.3.2
+    devDependencies:
+      '@types/js-yaml':
+        specifier: ^4.0.9
+        version: 4.0.9
+
+  vendor/loader: {}
 
 packages:
 
@@ -155,6 +223,10 @@ packages:
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
+  commander@15.1.0:
+    resolution: {integrity: sha512-cgnQ88TRrWcC7pVq46RzJVRMktu3W2RcbnoidnfBsl1bmDCBwJS/udcIZpKoCrbAYYaCqsz1yZCVIgbIaU3ddQ==}
+    engines: {node: '>=22.12.0'}
+
   js-yaml@4.3.2:
     resolution: {integrity: sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA==}
     hasBin: true
@@ -236,6 +308,8 @@ snapshots:
     optional: true
 
   argparse@2.0.1: {}
+
+  commander@15.1.0: {}
 
   js-yaml@4.3.2:
     dependencies:

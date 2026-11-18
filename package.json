@@ -1,5 +1,17 @@
 {
-    "name": "dsh-study-root",
-    "private": true,
-    "type": "module"
+  "name": "dsh-study-root",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:alignment": "node ./tests/alignment.spec.mjs",
+    "test:parity": "node ./tests/upstream-parity.mjs"
+  },
+  "devDependencies": {
+    "@study/cordis-plugin-include": "workspace:*",
+    "@study/dsh-app-boot": "workspace:*",
+    "js-yaml": "^4.3.2",
+    "typescript": "^7.0.2",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.19.2"
+  }
 }

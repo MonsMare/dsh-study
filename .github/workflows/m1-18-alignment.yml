@@ -1,0 +1,37 @@
+name: Mini DSH M1-18 Source Alignment
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.28.5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install study dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Type check CLI and dependencies
+        run: pnpm --filter @study/dsh-cli exec tsc --noEmit
+      - name: Study behavior tests
+        run: pnpm run test:alignment
+      - uses: actions/checkout@v4
+        with:
+          repository: deepseek-ai/deepseek-harness
+          ref: fcc0ad462172522aaf5c93a7b2e01f6b9f0b0159
+          path: .upstream
+          sparse-checkout: |
+            vendor/include/src/patch.ts
+          sparse-checkout-cone-mode: false
+          fetch-depth: 1
+      - name: Compare original source algorithm
+        run: pnpm run test:parity
+        env:
+          DSH_REFERENCE_DIR: .upstream
