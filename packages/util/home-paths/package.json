@@ -1,0 +1,8 @@
+{
+  "name": "@study/dsh-home-paths",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
