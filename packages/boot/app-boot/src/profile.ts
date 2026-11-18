@@ -151,7 +151,8 @@ export function resolveBundleDir(
 export function loadProfileDirectory(
   binName: string, dir: string, installAnchor: string, options: { userLayer?: boolean } = {},
 ): Profile {
-  const manifest = dropRetiredBundles(dir, readProfileManifest(binName, dir))  const bundles = manifest.dsh?.profile?.bundles ?? []
+  const manifest = dropRetiredBundles(dir, readProfileManifest(binName, dir))
+  const bundles = manifest.dsh?.profile?.bundles ?? []
   const layers: ProfileLayer[] = []
   const skippedBundles: SkippedBundle[] = []
   for (const packageName of bundles) {
