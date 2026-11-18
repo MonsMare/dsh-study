@@ -4,7 +4,7 @@
  */
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
-import ts from 'typescript'
+import * as ts from 'typescript'
 import { applyEntryPatches } from '../vendor/include/src/index.ts'
 const reference=process.env.DSH_REFERENCE_DIR
 if(!reference)throw new Error('Set DSH_REFERENCE_DIR to the local pinned deepseek-harness clone')
