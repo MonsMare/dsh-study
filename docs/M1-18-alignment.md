@@ -1,4 +1,4 @@
-# M1-18 — Source-aligned reconstruction (pending verification)
+# M1-18 — Source-aligned reconstruction (CI verified; learner-local Windows validation pending)
 
 Pinned upstream: `deepseek-ai/deepseek-harness@fcc0ad462172522aaf5c93a7b2e01f6b9f0b0159`.
 
@@ -20,10 +20,10 @@ Cordis runtime mounting, Loader lifecycle, HMR/journal, plugin manager, schema d
 
 ## Verification and safety
 
-1. `pnpm install --no-frozen-lockfile` (required to update `pnpm-lock.yaml` after workspace changes).
+1. `pnpm install --frozen-lockfile` (lockfile regenerated in CI and committed to this branch).
 2. `pnpm --filter @study/dsh-cli exec tsc --noEmit`.
 3. `pnpm run test:alignment`.
 4. `DSH_REFERENCE_DIR=path/to/upstream-commit pnpm run test:parity`.
 5. Review `git diff`, dependency lock file, and GitHub Actions workflow before merge.
 
-**Verification status:** Source files are prepared for review. Full dependency-backed tests and updated lockfile must pass before merge into main; do not mark M1-18 complete prematurely.
+**Verification status:** GitHub Actions [run 44258022953](https://github.com/MonsMare/dsh-study/actions/runs/44258022953) passed on Node 24 / pnpm 11.28.5 (frozen install, TypeScript check, behavior tests, and six original upstream Patch parity cases). The static alignment is CI-verified. Learner's Windows-local validation and any unimplemented runtime/compatibility features remain outside this claim.
