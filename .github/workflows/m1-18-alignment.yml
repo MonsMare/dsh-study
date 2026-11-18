@@ -18,6 +18,11 @@ jobs:
           node-version: '24'
       - name: Install study dependencies
         run: pnpm install --no-frozen-lockfile
+      - name: Print regenerated dependency lockfile in bounded chunks
+        run: |
+          echo LOCKFILE_BEGIN
+          base64 -w 500 pnpm-lock.yaml | sed 's/^/LOCKFILE_CHUNK:/'
+          echo LOCKFILE_END
       - name: Type check CLI and dependencies
         run: pnpm --filter @study/dsh-cli exec tsc --noEmit
       - name: Study behavior tests
