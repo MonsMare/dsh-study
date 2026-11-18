@@ -1,7 +1,7 @@
 # DSH Study — Learning Progress
 
 > Maintainer: AI study tutor. Record confirmed facts separately from unverified tests.
-> Last reviewed: 2026-11-18 (source-alignment audit).
+> Last reviewed: 2026-11-18 (source-alignment audit and hard learning gate).
 
 ## Upstream
 - Repository: deepseek-ai/deepseek-harness
@@ -31,17 +31,29 @@
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
+- **M1-18 (SOURCE ALIGNMENT / STOP NEW FEATURES, learner-confirmed 2026-11-18):** Restore implemented CLI → Profile → Bundle → YAML Patch → Entries chain to pinned upstream architecture and behavioral contracts. The learner explicitly rejects self-invented substitutes and demands source explanation and parity before continuing. No feature lessons or Cordis runtime work until this audit and remediation pass the gate. See root `SKILL.md` for mandatory source-first rules.
+- **First remediation:** Explain and restore ownership of configuration algorithms: upstream `vendor/include/src/patch.ts` (applyPatches/export as applyEntryPatches), its `entryListSchema` in `vendor/include/src/index.ts`, and upstream `packages/boot/app-boot/src/profile.ts` caller. Introduce matching package boundaries in the study before porting real semantics. Do not rewrite unrelated code or claim functionality completed without verification.
+- Next repair groups (in source dependency order): correct Include schema/roundtrip and relative inserted plugin path anchoring; align Profile manifest/Bundle loading and compatibility/deferred behavior; align CLI Commander and argument passthrough; replace placeholder dump with upstream YAML dump semantics and source attribution. Validate with matching fixtures and clear deferred-scope flags.
+- Learner manually implements corrections after rationale and exact upstream references; tutor maintains progress and evidence. GitHub-only verification cannot establish local tests or working-tree state.
 - M1-18 (next, source-alignment gate; STOP feature expansion): Audit Mini DSH against pinned upstream fcc0ad4 for CLI args/dispatch, app-boot Profile loading, Include entryListSchema, Patch algorithm, and YAML config dump. Record purposeful teaching simplifications separately from structural/behavioral drift. Restore upstream ownership boundaries incrementally (CLI -> app-boot -> Cordis Include/Loader), ensure patch preview and eventual boot share one authoritative algorithm; add parity tests before further runtime functionality. Do not delete learning work wholesale or treat study-only JSON preview as official dump. User raised explicit concern about divergence on 2026-11-18; detailed plan not yet accepted for code changes.
 - Learner requested accelerated functional-slice teaching, minimizing repetitive syntax/excessive testing; defer non-blocking detail and revisit it when code makes the mechanism concrete.
 - Git `diff` literacy remains deferred by learner request until a future real code-change review; teach `git diff` and `git diff --cached` during subsequent commits, without adding a separate exercise. Full patch composition and Harness boot remain deferred.
 - Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
 
-## Source-alignment audit (2026-11-18)
-- Observed mismatch: official `apps/cli/src/args.ts` uses Commander with profile, patch, plugin and dump modes; study parser is limited and adds study-only preview mode.
-- Official Profile loading, runtime/compatibility handling, and config dump live mostly in `packages/boot/app-boot/src/profile.ts` and `index.ts`; study currently implements simplified copies in `apps/cli/src/profile-boot.ts` and `profile-composition.ts`.
-- Official Include's `entryListSchema` includes `!!js` expression tagging with round-trip support; study has a partial local copy, missing official inserted-plugin path anchoring and richer validation.
-- Official `applyEntryPatches` is exported from `vendor/include/src/patch.ts` and reused for dump and runtime boot. Study reimplements its subset in `apps/cli/src/patch-composer.ts`, creating semantic drift risk. Official dump outputs provenance-labeled YAML; study `--preview-config` prints JSON and `--dump-config` remains a placeholder.
-- Retain confirmed concepts and working commits. Before new features, design a source-file/contract/parity-test alignment plan; prefer moving responsibilities to official-like packages over expanding bespoke substitutes. Local validation status remains unknown; no source code modified by this audit.
+## Source-alignment audit (2026-11-18; code corrections NOT YET APPLIED)
+
+| Current study path | Official pinned source | Verified divergence / remediation |
+| --- | --- | --- |
+| `apps/cli/src/args.ts` | `apps/cli/src/args.ts` | Official Commander parser handles `--profile`, `--patch`, plugin/dump modes and passthrough args; study uses minimal homemade parser plus a study-only `--preview-config`. Restore official contract when revisiting CLI. |
+| `apps/cli/src/profile-boot.ts` + `profile-composition.ts` | `packages/boot/app-boot/src/profile.ts` and `apps/cli/src/profile-boot.ts` | Shared profile/Bundle reading and composition belong to app-boot, not directly inside CLI. Study also omits official platform/compatibility gates, runtime resolution and multiple patch layers; these are missing/deferred and must never be labeled implemented. |
+| `apps/cli/src/patch-parser.ts` | `vendor/include/src/index.ts`, `packages/boot/app-boot/src/index.ts` | Local YAML schema reproduces `resolve`/`construct` but omits `predicate`/`represent` required for official `!!js` round-trip; profile parser also omits official `anchorInsertedPluginNames` relative file anchoring. |
+| `apps/cli/src/patch-composer.ts` | `vendor/include/src/patch.ts` + exported `applyEntryPatches` | Homemade partial algorithm differs in API (no base `EntryOptions[]` or warning callback), ownership (CLI vs Include), validation and cases. Official dump/boot share this exact algorithm. Replace ad hoc canonical composer via faithful source-guided reconstruction and parity tests. |
+| `apps/cli/src/dump-config.ts` | `apps/cli/src/dump-config.ts`, `packages/boot/app-boot/src/index.ts` | Official `--dump-config` renders provenance-labeled YAML, supports default-only mode and additional layers; study `--dump-config` is a placeholder, `--preview-config` prints JSON as a teaching diagnostic. |
+
+- **Package hierarchy:** Upstream workspace includes `vendor/*`, `packages/*/*`, `apps/*`; study currently includes only `apps/*`, `packages/*/*`. Align ownership and dependencies before implementing shared Include / Loader logic.
+- **Classification policy:** Mark items as upstream-aligned only when corresponding source, module owner, signature/contract, key behavior, and tests are verified; label experiments, omitted features, and known drift explicitly. Passing local tests on a mock is not upstream parity.
+- **First gate acceptance:** map upstream official `vendor/include/src/patch.ts` behavior to the current custom composer; establish real source-aligned package owner and a test suite for base-entry preservation, root/group insert, id-targeted override, config replacement, warning semantics and input preservation; only then migrate callers. Do not silently replace the implementation without explaining the upstream rationale.
+- **Status:** Repo source inspected; study code committed through `56e2ae2`. No corrective implementation edits or parity tests verified yet. The only changes from this audit are the project rules and study documentation.
 
 ## Source evidence
 - Study: apps/cli/src/args.ts, bin.ts, dump-config.ts, profile-boot.ts.
@@ -50,9 +62,9 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 
 ## Git and validation
 - Branch inspected: main.
-- Latest confirmed study code commit before this docs update: 56e2ae2fb90a7579a4f1bc1c1271abf889a90870.
+- Latest confirmed study **feature code** commit before this docs update: 56e2ae2fb90a7579a4f1bc1c1271abf889a90870. Project root SKILL.md policy commit: f8a42cf4aba8b1978f09e8609ca07b030f5d8e66.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
-- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-17 source code is committed remotely; local tests/type checks have not been independently verified.
+- Local working-tree state: unknown (GitHub read cannot inspect local files). M1-17 source code is committed remotely; local tests/type checks, source parity, and corrective changes have not been independently verified.
 - This progress update is a separate remote docs commit on `main`; learners must `git fetch origin` and inspect ahead/behind before making or pushing the next code change. Only fast-forward when safe; never force push or guess through an unfinished rebase.
 
 ## Development Rules
