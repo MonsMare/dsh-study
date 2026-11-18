@@ -1,4 +1,4 @@
-import {parseDshArgs} from "./args.ts";
+import { parseDshArgs } from "./args.ts";
 
 export async function runCli(): Promise<void> {
     const invocation = parseDshArgs(process.argv.slice(2));
@@ -18,7 +18,20 @@ export async function runCli(): Promise<void> {
         case "dump-config": {
             const { runDumpConfig } = await import("./dump-config.ts");
 
-            runDumpConfig( invocation.profile, invocation.defaultOnly );
+            runDumpConfig(invocation.profile, invocation.defaultOnly);
+
+            break;
+        }
+
+        case "preview-config": {
+            const { runPreviewConfig } =
+                await import("./dump-config.ts");
+
+            runPreviewConfig(
+                invocation.profile,
+                invocation.home,
+                invocation.installAnchor
+            );
 
             break;
         }
