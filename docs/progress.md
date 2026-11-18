@@ -31,10 +31,10 @@
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- **M1-18 static configuration alignment — GitHub CI PASS, pending learner's local Windows validation.** Fix branch `fix/m1-18-source-alignment` / PR #1 restored upstream-like ownership for CLI args, app-boot Profile and YAML dumping, Include Patch algorithm, Loader entry contract, Home Paths / Manifest / Bundle metadata, and generated `pnpm-lock.yaml`.
+- **M1-18 static configuration alignment — GitHub CI PASS; learner-reported local typecheck and alignment tests PASS (2026-11-18).** Fix branch `fix/m1-18-source-alignment` / PR #1 restored upstream-like ownership for CLI args, app-boot Profile and YAML dumping, Include Patch algorithm, Loader entry contract, Home Paths / Manifest / Bundle metadata, and generated `pnpm-lock.yaml`.
 - GitHub Actions [run 44258022953](https://github.com/MonsMare/dsh-study/actions/runs/44258022953) completed **SUCCESS** on Node 24 and pnpm 11.28.5: frozen install, CLI TS typecheck, source-chain behavior tests, and six pinned upstream `applyPatches` parity fixtures.
 - **Not implemented:** live Cordis loader/agent loop, runtime plugin lifecycle, HMR/journal, native schema dump, plugin management, full profile compatibility and legacy migration, and `--from-default-profile`. These remain explicitly blocked or deferred, never represented as supported.
-- Next user action: safely sync merged `main`, run `pnpm.exe install --frozen-lockfile`, `pnpm.exe --filter @study/dsh-cli exec tsc --noEmit`, and `pnpm.exe test:alignment` locally. Cross-platform Windows evidence is not yet available. Do not start new feature lessons until the learner confirms local validation and review.
+- Learner confirmed the corrected code was synced locally and the previously supplied local checks completed without errors (2026-11-18). Treat this as user-reported Windows-local validation, not independently captured logs; whether the optional local `test:parity` was run is unspecified (CI parity PASS). Current lesson: compare pre- and post-alignment source to bridge the conceptual gap before new feature development.
 - Source-first requirement: before any next module, read root `SKILL.md`, current progress, recent commits and pinned upstream exact implementations.
 
 ## Source-alignment audit (2026-11-18; remediated in PR #1 static-slice scope)
