@@ -11,6 +11,6 @@ const JsExpr = new yaml.Type('tag:yaml.org,2002:js', {
   resolve: (data) => typeof data === 'string',
   construct: (data) => ({ __jsExpr: data }),
   predicate: isJsExpr,
-  represent: (data) => data['__jsExpr'],
+  represent: (data) => (data as { __jsExpr: string }).__jsExpr,
 })
 export const entryListSchema = yaml.JSON_SCHEMA.extend(JsExpr)
