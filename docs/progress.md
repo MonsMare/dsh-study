@@ -31,16 +31,13 @@
 These are confirmed as committed source; local TypeScript and runtime test outputs are not independently available to the tutor.
 
 ## Current
-- **Implementation branch**: `fix/m1-18-source-alignment`, pending GitHub Actions and lockfile update. Static config code has been migrated to upstream-like owner modules; full runtime and legacy/compatibility branches remain explicitly unimplemented. This is NOT a completed/pass state until CI and upstream parity both pass.
-- **M1-18 (SOURCE ALIGNMENT / STOP NEW FEATURES, learner-confirmed 2026-11-18):** Restore implemented CLI → Profile → Bundle → YAML Patch → Entries chain to pinned upstream architecture and behavioral contracts. The learner explicitly rejects self-invented substitutes and demands source explanation and parity before continuing. No feature lessons or Cordis runtime work until this audit and remediation pass the gate. See root `SKILL.md` for mandatory source-first rules.
-- **First remediation:** Explain and restore ownership of configuration algorithms: upstream `vendor/include/src/patch.ts` (applyPatches/export as applyEntryPatches), its `entryListSchema` in `vendor/include/src/index.ts`, and upstream `packages/boot/app-boot/src/profile.ts` caller. Introduce matching package boundaries in the study before porting real semantics. Do not rewrite unrelated code or claim functionality completed without verification.
-- Next repair groups (in source dependency order): correct Include schema/roundtrip and relative inserted plugin path anchoring; align Profile manifest/Bundle loading and compatibility/deferred behavior; align CLI Commander and argument passthrough; replace placeholder dump with upstream YAML dump semantics and source attribution. Validate with matching fixtures and clear deferred-scope flags.
-- Learner manually implements corrections after rationale and exact upstream references; tutor maintains progress and evidence. GitHub-only verification cannot establish local tests or working-tree state.
-- Learner had requested faster functional slices, but source fidelity takes priority: do not accelerate by inventing parallel implementations or omitting upstream contract review.
-- Git `diff` literacy remains deferred by learner request until a future real code-change review; teach `git diff` and `git diff --cached` during subsequent commits, without adding a separate exercise. Full patch composition and Harness boot remain deferred.
-- Scope: avoid modifying real ~/.dsh, mounting bundles, or treating teaching code as full DSH startup.
+- **M1-18 static configuration alignment — GitHub CI PASS, pending learner's local Windows validation.** Fix branch `fix/m1-18-source-alignment` / PR #1 restored upstream-like ownership for CLI args, app-boot Profile and YAML dumping, Include Patch algorithm, Loader entry contract, Home Paths / Manifest / Bundle metadata, and generated `pnpm-lock.yaml`.
+- GitHub Actions [run 44258022953](https://github.com/MonsMare/dsh-study/actions/runs/44258022953) completed **SUCCESS** on Node 24 and pnpm 11.28.5: frozen install, CLI TS typecheck, source-chain behavior tests, and six pinned upstream `applyPatches` parity fixtures.
+- **Not implemented:** live Cordis loader/agent loop, runtime plugin lifecycle, HMR/journal, native schema dump, plugin management, full profile compatibility and legacy migration, and `--from-default-profile`. These remain explicitly blocked or deferred, never represented as supported.
+- Next user action: safely sync merged `main`, run `pnpm.exe install --frozen-lockfile`, `pnpm.exe --filter @study/dsh-cli exec tsc --noEmit`, and `pnpm.exe test:alignment` locally. Cross-platform Windows evidence is not yet available. Do not start new feature lessons until the learner confirms local validation and review.
+- Source-first requirement: before any next module, read root `SKILL.md`, current progress, recent commits and pinned upstream exact implementations.
 
-## Source-alignment audit (2026-11-18; code corrections NOT YET APPLIED)
+## Source-alignment audit (2026-11-18; remediated in PR #1 static-slice scope)
 
 | Current study path | Official pinned source | Verified divergence / remediation |
 | --- | --- | --- |
@@ -53,7 +50,7 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 - **Package hierarchy:** Upstream workspace includes `vendor/*`, `packages/*/*`, `apps/*`; study currently includes only `apps/*`, `packages/*/*`. Align ownership and dependencies before implementing shared Include / Loader logic.
 - **Classification policy:** Mark items as upstream-aligned only when corresponding source, module owner, signature/contract, key behavior, and tests are verified; label experiments, omitted features, and known drift explicitly. Passing local tests on a mock is not upstream parity.
 - **First gate acceptance:** map upstream official `vendor/include/src/patch.ts` behavior to the current custom composer; establish real source-aligned package owner and a test suite for base-entry preservation, root/group insert, id-targeted override, config replacement, warning semantics and input preservation; only then migrate callers. Do not silently replace the implementation without explaining the upstream rationale.
-- **Status:** Repo source inspected; study code committed through `56e2ae2`. No corrective implementation edits or parity tests verified yet. The only changes from this audit are the project rules and study documentation.
+- **Status:** Historical discrepancies below refer to pre-M1-18 code. The PR #1 correction removed CLI-local substitutes, restored source-backed static modules and tests. Node24/pnpm11 GitHub Actions [run 44258022953](https://github.com/MonsMare/dsh-study/actions/runs/44258022953) **PASS**; local Windows and unimplemented runtime/compatibility scope remain separate.
 
 ## Source evidence
 - Study: apps/cli/src/args.ts, bin.ts, dump-config.ts, profile-boot.ts.
@@ -61,6 +58,7 @@ These are confirmed as committed source; local TypeScript and runtime test outpu
 - Note: current study resolveProfileDir omits DSH_HOME override contract, intentionally simplified.
 
 ## Git and validation
+- M1-18 PR #1 source-aligned branch verified via Actions run 44258022953: frozen pnpm lockfile, TS, runtime fixture and exact upstream patch-function parity all succeeded. Cross-platform learner-local tests not observed.
 - Branch inspected: main.
 - Latest confirmed study **feature code** commit before this docs update: 56e2ae2fb90a7579a4f1bc1c1271abf889a90870. Project root SKILL.md policy commit: f8a42cf4aba8b1978f09e8609ca07b030f5d8e66.
 - Learner confirmed an interrupted rebase was completed and subsequent push succeeded (2026-11-12). Remote code verified.
