@@ -4,7 +4,7 @@
  */
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
-import * as ts from 'typescript'
+import { stripTypeScriptTypes } from 'node:module'
 import { applyEntryPatches } from '../vendor/include/src/index.ts'
 const reference=process.env.DSH_REFERENCE_DIR
 if(!reference)throw new Error('Set DSH_REFERENCE_DIR to the local pinned deepseek-harness clone')
@@ -14,7 +14,7 @@ const begin=source.indexOf('export function applyPatches(')
 const end=source.indexOf('\n}\n',begin)
 assert.ok(begin>=0&&end>begin,'could not isolate exact official function')
 const fragment=source.slice(begin,end+2)
-const js=ts.transpileModule(fragment,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}}).outputText
+const js=stripTypeScriptTypes(fragment, { mode: 'strip' })
 const official=(await import('data:text/javascript;base64,'+Buffer.from(js).toString('base64'))).applyPatches
 const cases=[
  {base:[],patches:[{insert:[{id:'a',name:'a',config:{x:1}}]},{id:'a',config:{x:2}}]},
